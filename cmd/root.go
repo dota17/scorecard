@@ -33,6 +33,7 @@ import (
 	"github.com/ossf/scorecard/v3/checker"
 	"github.com/ossf/scorecard/v3/checks"
 	"github.com/ossf/scorecard/v3/clients"
+	"github.com/ossf/scorecard/v3/clients/giteerepo"
 	"github.com/ossf/scorecard/v3/clients/githubrepo"
 	"github.com/ossf/scorecard/v3/clients/localdir"
 	docs "github.com/ossf/scorecard/v3/docs/checks"
@@ -217,14 +218,27 @@ func getRepoAccessors(ctx context.Context, uri string, logger *zap.Logger) (
 	ciiClient clients.CIIBestPracticesClient,
 	repoType string,
 	err error) {
-	var localRepo, githubRepo clients.Repo
-	var errLocal, errGitHub error
+	var localRepo, githubRepo, giteeRepo clients.Repo
+	var errLocal, errGitHub, errGitee error
 	if localRepo, errLocal = localdir.MakeLocalDirRepo(uri); errLocal == nil {
 		// Local directory.
 		repoType = repoTypeLocal
 		repo = localRepo
 		repoClient = localdir.CreateLocalDirClient(ctx, logger)
 		return
+	}
+
+	// gitee URL.
+	if strings.Contains(uri, "gitee.com") {
+		if giteeRepo, errGitee = giteerepo.MakeGiteeRepo(uri); errGitee == nil {
+			// Gitee URL.
+			repoType = repoTypeGitHub
+			repo = giteeRepo
+			repoClient = giteerepo.CreateGiteeRepoClient(ctx, logger)
+			ciiClient = clients.DefaultCIIBestPracticesClient()
+			//ossFuzzRepoClient, err = githubrepo.CreateOssFuzzRepoClient(ctx, logger)
+			return
+		}
 	}
 	if githubRepo, errGitHub = githubrepo.MakeGithubRepo(uri); errGitHub == nil {
 		// GitHub URL.

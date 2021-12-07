@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package githubrepo
+package giteerepo
 
 import (
 	"fmt"
@@ -24,7 +24,9 @@ import (
 )
 
 const (
-	githubOrgRepo = ".github"
+	giteeOrgRepo   = ".gitee"
+	scorecardOwner = "ossf"
+	scorecardRepo  = "scorecard"
 )
 
 type repoURL struct {
@@ -33,7 +35,7 @@ type repoURL struct {
 }
 
 // Parses input string into repoURL struct.
-// Accepts "owner/repo" or "github.com/owner/repo".
+// Accepts "owner/repo" or "gitee.com/owner/repo".
 func (r *repoURL) parse(input string) error {
 	var t string
 
@@ -44,9 +46,9 @@ func (r *repoURL) parse(input string) error {
 
 	switch l := len(c); {
 	// This will takes care for repo/owner format.
-	// By default it will use github.com
+	// By default it will use gitee.com
 	case l == two:
-		t = "github.com/" + c[0] + "/" + c[1]
+		t = "gitee.com/" + c[0] + "/" + c[1]
 	case l >= three:
 		t = input
 	}
@@ -71,7 +73,7 @@ func (r *repoURL) parse(input string) error {
 	return nil
 }
 
-// URI implements Repo.URI().
+// URL implements Repo.URI.
 func (r *repoURL) URI() string {
 	return fmt.Sprintf("%s/%s/%s", r.host, r.owner, r.repo)
 }
@@ -86,7 +88,7 @@ func (r *repoURL) Org() clients.Repo {
 	return &repoURL{
 		host:  r.host,
 		owner: r.owner,
-		repo:  githubOrgRepo,
+		repo:  giteeOrgRepo,
 	}
 }
 
@@ -115,9 +117,14 @@ func (r *repoURL) Metadata() []string {
 	return r.metadata
 }
 
-// MakeGithubRepo takes input of form "owner/repo" or "github.com/owner/repo"
+// IsScorecardRepo implements Repo.IsScorecardRepo.
+func (r *repoURL) IsScorecardRepo() bool {
+	return r.owner == scorecardOwner && r.repo == scorecardRepo
+}
+
+// MakeGiteeRepo takes input of form "owner/repo" or "gitee.com/owner/repo"
 // and returns an implementation of clients.Repo interface.
-func MakeGithubRepo(input string) (clients.Repo, error) {
+func MakeGiteeRepo(input string) (clients.Repo, error) {
 	var repo repoURL
 	if err := repo.parse(input); err != nil {
 		return nil, fmt.Errorf("error during parse: %w", err)

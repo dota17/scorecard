@@ -8,6 +8,7 @@ require (
 	cloud.google.com/go/pubsub v1.17.0
 	cloud.google.com/go/trace v0.1.0 // indirect
 	contrib.go.opencensus.io/exporter/stackdriver v0.13.8
+	gitee.com/openeuler/go-gitee v0.0.0-20211203025010-125370920041
 	github.com/bradleyfalzon/ghinstallation/v2 v2.0.3
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/golang/mock v1.6.0
@@ -46,6 +47,7 @@ require (
 	github.com/Microsoft/go-winio v0.5.0 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20210428141323-04723f9f07d7 // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
+	github.com/antihax/optional v1.0.0 // indirect
 	github.com/aws/aws-sdk-go v1.40.34 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.3.0 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.7.0 // indirect

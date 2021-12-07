@@ -1,0 +1,58 @@
+// Copyright 2021 Security Scorecard Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package giteerepo
+
+import (
+	"context"
+	"gitee.com/openeuler/go-gitee/gitee"
+	"github.com/ossf/scorecard/v3/clients"
+)
+
+type checkrunsHandler struct {
+	client *gitee.APIClient
+	ctx    context.Context
+	owner  string
+	repo   string
+}
+
+func (handler *checkrunsHandler) init(ctx context.Context, owner, repo string) {
+	handler.ctx = ctx
+	handler.owner = owner
+	handler.repo = repo
+}
+
+func (handler *checkrunsHandler) listCheckRunsForRef(ref string) ([]clients.CheckRun, error) {
+	//checkRuns, _, err := handler.client.Checks.ListCheckRunsForRef(handler.ctx, handler.owner, handler.repo, ref,
+	//	&gitee.ListCheckRunsOptions{})
+	//if err != nil {
+	//	return nil, sce.WithMessage(sce.ErrScorecardInternal, fmt.Sprintf("ListCheckRunsForRef: %v", err))
+	//}
+	return checkRunsFrom(), nil
+}
+
+func checkRunsFrom() []clients.CheckRun {
+	var checkRuns []clients.CheckRun
+	//for _, checkRun := range data.CheckRuns {
+	//	checkRuns = append(checkRuns, clients.CheckRun{
+	//		Status:     checkRun.GetStatus(),
+	//		Conclusion: checkRun.GetConclusion(),
+	//		URL:        checkRun.GetURL(),
+	//		App: clients.CheckRunApp{
+	//			Slug: checkRun.GetApp().GetSlug(),
+	//		},
+	//	})
+	//}
+	return checkRuns
+}
